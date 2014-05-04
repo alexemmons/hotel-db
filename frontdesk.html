@@ -195,7 +195,7 @@ window.onload=occupiedRooms1();
 window.onload=occupiedRooms2();
 window.onload=occupiedRooms3();
 var num;
-var price = 1;
+var price = 0;
 function addRoomToList()
 {
     var sel = document.getElementById('availableRooms');
@@ -377,7 +377,7 @@ function updateTotal()
 }
 
 var date;
-var diffDays = 1;
+var diffDays = 0;
 function setCheckout() {
     date = document.getElementById('checkout').value;
     var month;
@@ -420,9 +420,8 @@ function setCheckout() {
     calcTotal();
     var select = document.getElementById('selectBox');
     for(var j = select.length - 1; j>=0; j--) {
-        if (select.options[j].text.indexOf("Checkout") > -1) {
+        if ((select.options[j].text.indexOf("Checkout") > -1) || (select.options[j].text.indexOf("Nights") > -1)) {
             select.options.remove(j);
-            break;
         }
     }
     var option = document.createElement("option");
@@ -430,15 +429,15 @@ function setCheckout() {
     option.text = 'Checkout: '+date;
     option.value = date;
     select.add(option);
-    option2.text = 'Nights: '+(diffDays-1);
-    option2.value = date;
+    option2.text = 'Nights: '+(diffDays);
+    option2.value = diffDays;
     select.add(option2);
 }
 
 function calcTotal()
 {
     var total;
-    total = (diffDays-1) * price;
+    total = (diffDays) * price;
     document.getElementById('total').innerHTML = total;
 }
 
