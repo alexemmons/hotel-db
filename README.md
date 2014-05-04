@@ -1,5 +1,5 @@
 hotel-db
 ========
-Database Systems spring 2014 project<br>
-Using MySQL and Node.js<br>
+UMM Spring 2014 Database Systems (CS 4453) project<br>
+Using WebStorm, node.js, and MySQL<br>
 Along with HTML/CSS/JavaScript and Bootstrap
