@@ -11,180 +11,180 @@
 <script type="text/javascript">
 var socket = io.connect('http://localhost:8000');
 function deleteItems()
-{	
-	var sel = document.getElementById('selectBox');
-	var ids = [];
-	for (var i = sel.length - 1; i>=0; i--) {
-		if (sel.options[i].selected) {
-			ids.push(sel.options[i].value);
-			sel.remove(i);
-		}
-	}
+{
+    var sel = document.getElementById('selectBox');
+    var ids = [];
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            ids.push(sel.options[i].value);
+            sel.remove(i);
+        }
+    }
 }
 
 function voidItems()
 {
-	var sel = document.getElementById('selectBox');
-	for (var i = sel.length - 1; i>=0; i--) {
-		sel.remove(i);
-	}
-	document.getElementById('total').innerHTML = 0;
-	availableRooms();
-	occupiedRooms1();
-	occupiedRooms2();
-	occupiedRooms3();
-	guestList();
-	document.getElementById('employee').selectedIndex = 0;
-	num = undefined;
-	name = undefined;
-	employee = undefined;
-	date = undefined;
+    var sel = document.getElementById('selectBox');
+    for (var i = sel.length - 1; i>=0; i--) {
+        sel.remove(i);
+    }
+    document.getElementById('total').innerHTML = 0;
+    availableRooms();
+    occupiedRooms1();
+    occupiedRooms2();
+    occupiedRooms3();
+    guestList();
+    document.getElementById('employee').selectedIndex = 0;
+    num = undefined;
+    name = undefined;
+    employee = undefined;
+    date = undefined;
 }
 var employee;
 function addEmployee()
 {
-	var select = document.getElementById("selectBox"); 
-	var nameBox = document.getElementById('employee');
-	for (var i = nameBox.length - 1; i>=0; i--) {
-		if (nameBox.options[i].selected) {
-			employee=nameBox.options[i].value;
-		}
-	}
-	for(var j = select.length - 1; j>=0; j--) {
-		if (select.options[j].text.indexOf("Employee") > -1) {
-			select.options.remove(j);
-			break;
-		}
-	}		
-	
-	var option = document.createElement("option");
-	option.text = 'Employee: '+employee;
-	option.value = employee;
-	select.add(option);
+    var select = document.getElementById("selectBox");
+    var nameBox = document.getElementById('employee');
+    for (var i = nameBox.length - 1; i>=0; i--) {
+        if (nameBox.options[i].selected) {
+            employee=nameBox.options[i].value;
+        }
+    }
+    for(var j = select.length - 1; j>=0; j--) {
+        if (select.options[j].text.indexOf("Employee") > -1) {
+            select.options.remove(j);
+            break;
+        }
+    }
+
+    var option = document.createElement("option");
+    option.text = 'Employee: '+employee;
+    option.value = employee;
+    select.add(option);
 }
 var name;
 function addGuestToRegister()
 {
-	var nameBox = document.getElementById('guestBox');
-	var select = document.getElementById("selectBox");   
-	for (var i = nameBox.length - 1; i>=0; i--) {
-		if (nameBox.options[i].selected) {
-			name=nameBox.options[i].value;
-		}
-	}
-	for(var j = select.length - 1; j>=0; j--) {
-		if (select.options[j].text.indexOf("Guest") > -1) {
-			select.options.remove(j);
-			break;
-		}
-	}
-	var option = document.createElement("option");
-	option.text = 'Guest: '+name;
-	option.value = name;
-	select.add(option);	
+    var nameBox = document.getElementById('guestBox');
+    var select = document.getElementById("selectBox");
+    for (var i = nameBox.length - 1; i>=0; i--) {
+        if (nameBox.options[i].selected) {
+            name=nameBox.options[i].value;
+        }
+    }
+    for(var j = select.length - 1; j>=0; j--) {
+        if (select.options[j].text.indexOf("Guest") > -1) {
+            select.options.remove(j);
+            break;
+        }
+    }
+    var option = document.createElement("option");
+    option.text = 'Guest: '+name;
+    option.value = name;
+    select.add(option);
 }
 
 function voidAvailableRooms()
 {
-	var select = document.getElementById("availableRooms");
-	for (var i = select.length - 1; i>=0; i--) {
-		select.remove(i);
-	}
+    var select = document.getElementById("availableRooms");
+    for (var i = select.length - 1; i>=0; i--) {
+        select.remove(i);
+    }
 }
 
 function additionalCharges()
 {
-	socket.emit('getCharges');
-	socket.on('charges', function(data) {
-			var select = document.getElementById("additional");
-			select.options.length = 0;
-				var option = document.createElement("option"); 
-				option.text = 'Charge:';
-				option.value = 'null';
-				select.add(option);
-			for (var i = data.length - 1; i>=0; i--) {
-				option.text = data[i];
-				option.value = data[i];
-				select.add(option);
-			}
-	});
+    socket.emit('getCharges');
+    socket.on('charges', function(data) {
+        var select = document.getElementById("additional");
+        select.options.length = 0;
+        var option = document.createElement("option");
+        option.text = 'Charge:';
+        option.value = 'null';
+        select.add(option);
+        for (var i = data.length - 1; i>=0; i--) {
+            option.text = data[i];
+            option.value = data[i];
+            select.add(option);
+        }
+    });
 }
 
 window.onload=additionalCharges();
 
 function availableRooms()
 {
-	socket.emit('getAvailable');
-	socket.on('available', function(data) {
-			var select = document.getElementById("availableRooms");
-			select.options.length = 0;
-				var option = document.createElement("option"); 
-				option.text = 'Room #:';
-				option.value = 'null';
-				select.add(option); 
-			for (var i = data.length - 1; i>=0; i--) {
-				option.text = data[i];
-				option.value = data[i];
-				select.add(option);
-			}
-			
-	});
+    socket.emit('getAvailable');
+    socket.on('available', function(data) {
+        var select = document.getElementById("availableRooms");
+        select.options.length = 0;
+        var option = document.createElement("option");
+        option.text = 'Room #:';
+        option.value = 'null';
+        select.add(option);
+        for (var i = data.length - 1; i>=0; i--) {
+            option.text = data[i];
+            option.value = data[i];
+            select.add(option);
+        }
+
+    });
 }
 
 window.onload=availableRooms();
 
 function occupiedRooms1()
 {
-	socket.emit('getOccupied');
-	socket.on('occupied', function(data) {
-			var select = document.getElementById("occupiedRooms1");
-			select.options.length = 0;
-				var option = document.createElement("option"); 
-				option.text = 'Room #:';
-				option.value = 'null';
-				select.add(option); 
-			for (var i = data.length - 1; i>=0; i--) {
-				option.text = data[i];
-				option.value = data[i];
-				select.add(option);
-			}
-	});
+    socket.emit('getOccupied');
+    socket.on('occupied', function(data) {
+        var select = document.getElementById("occupiedRooms1");
+        select.options.length = 0;
+        var option = document.createElement("option");
+        option.text = 'Room #:';
+        option.value = 'null';
+        select.add(option);
+        for (var i = data.length - 1; i>=0; i--) {
+            option.text = data[i];
+            option.value = data[i];
+            select.add(option);
+        }
+    });
 }
 
 function occupiedRooms2()
 {
-	socket.emit('getOccupied');
-	socket.on('occupied', function(data) {
-			var select = document.getElementById("occupiedRooms2");
-			select.options.length = 0;
-				var option = document.createElement("option"); 
-				option.text = 'Room #:';
-				option.value = 'null';
-				select.add(option); 
-			for (var i = data.length - 1; i>=0; i--) {
-				option.text = data[i];
-				option.value = data[i];
-				select.add(option);
-			}
-	});
+    socket.emit('getOccupied');
+    socket.on('occupied', function(data) {
+        var select = document.getElementById("occupiedRooms2");
+        select.options.length = 0;
+        var option = document.createElement("option");
+        option.text = 'Room #:';
+        option.value = 'null';
+        select.add(option);
+        for (var i = data.length - 1; i>=0; i--) {
+            option.text = data[i];
+            option.value = data[i];
+            select.add(option);
+        }
+    });
 }
 
 function occupiedRooms3()
 {
-	socket.emit('getOccupied');
-	socket.on('occupied', function(data) {
-			var select = document.getElementById("occupiedRooms3");
-			select.options.length = 0;
-				var option = document.createElement("option"); 
-				option.text = 'Room #:';
-				option.value = 'null';
-				select.add(option); 
-			for (var i = data.length - 1; i>=0; i--) {
-				option.text = data[i];
-				option.value = data[i];
-				select.add(option);
-			}
-	});
+    socket.emit('getOccupied');
+    socket.on('occupied', function(data) {
+        var select = document.getElementById("occupiedRooms3");
+        select.options.length = 0;
+        var option = document.createElement("option");
+        option.text = 'Room #:';
+        option.value = 'null';
+        select.add(option);
+        for (var i = data.length - 1; i>=0; i--) {
+            option.text = data[i];
+            option.value = data[i];
+            select.add(option);
+        }
+    });
 }
 window.onload=occupiedRooms1();
 window.onload=occupiedRooms2();
@@ -193,141 +193,141 @@ var num;
 var price = 1;
 function addRoomToList()
 {
-    	var sel = document.getElementById('availableRooms');
-    	for (var i = sel.length - 1; i>=0; i--) {
-    		if (sel.options[i].selected) {
-    			if(sel.options[i].value !== 'null') {
-			num=sel.options[i].value;
-			} else {
-				return;
-			}
-		}
-	}
-	socket.emit('addRoomToRegister', num);
-	var select = document.getElementById("selectBox");
-	socket.on('roomAdded', function(data) {	
-	        price = data;
-			for(var j = select.length - 1; j>=0; j--) {
-				if (select.options[j].text.indexOf("Room") > -1) {
-					select.options.remove(j);
-					break;
-				}
-			}
-			var option = document.createElement("option");
-			option.text = 'Room '+num+': $' + price+'/night';
-			option.value = num;
-			select.add(option);
-			calcTotal();
-			
-	});	
+    var sel = document.getElementById('availableRooms');
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            if(sel.options[i].value !== 'null') {
+                num=sel.options[i].value;
+            } else {
+                return;
+            }
+        }
+    }
+    socket.emit('addRoomToRegister', num);
+    var select = document.getElementById("selectBox");
+    socket.on('roomAdded', function(data) {
+        price = data;
+        for(var j = select.length - 1; j>=0; j--) {
+            if (select.options[j].text.indexOf("Room") > -1) {
+                select.options.remove(j);
+                break;
+            }
+        }
+        var option = document.createElement("option");
+        option.text = 'Room '+num+': $' + price+'/night';
+        option.value = num;
+        select.add(option);
+        calcTotal();
+
+    });
 }
 
 function addChargeToList()
 {
-	var charge;   
-	var sel = document.getElementById('additional');
-    	for (var i = sel.length - 1; i>=0; i--) {
-    		if (sel.options[i].selected) {
-    			if(sel.options[i].value !== 'null') {
-				charge=sel.options[i].value;
-			} else {
-				return;
-			}
-		}
-	}
-	
-	socket.emit('addChargeToRegister', charge);
-	socket.on('chargeAdded', function(data) {
-			var select = document.getElementById("selectBox");
-			for(var j = select.length - 1; j>=0; j--) {
-				if (!(select.options[j].text.indexOf("Room") > -1)) {				
-				select.options.remove(j);
-				}
-			}
-			var option = document.createElement("option");
-			option.text = charge+": $"+data;
-			option.value = data;
-			select.add(option);
-			document.getElementById("total").innerHTML =  data;
-			//var total = parseFloat(document.getElementById("total").innerHTML);	
-			//var newTotal = total+parseFloat(data);
-			//document.getElementById("total").innerHTML =  newTotal;	
-	});
+    var charge;
+    var sel = document.getElementById('additional');
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            if(sel.options[i].value !== 'null') {
+                charge=sel.options[i].value;
+            } else {
+                return;
+            }
+        }
+    }
+
+    socket.emit('addChargeToRegister', charge);
+    socket.on('chargeAdded', function(data) {
+        var select = document.getElementById("selectBox");
+        for(var j = select.length - 1; j>=0; j--) {
+            if (!(select.options[j].text.indexOf("Room") > -1)) {
+                select.options.remove(j);
+            }
+        }
+        var option = document.createElement("option");
+        option.text = charge+": $"+data;
+        option.value = data;
+        select.add(option);
+        document.getElementById("total").innerHTML =  data;
+        //var total = parseFloat(document.getElementById("total").innerHTML);
+        //var newTotal = total+parseFloat(data);
+        //document.getElementById("total").innerHTML =  newTotal;
+    });
 }
 
 
 var occNum;
 function addOccupiedToList1()
 {
-    	var sel = document.getElementById('occupiedRooms1');
-    	for (var i = sel.length - 1; i>=0; i--) {
-    		if (sel.options[i].selected) {
-    			if(sel.options[i].value !== 'null') {
-				occNum=sel.options[i].value;
-			} else {
-				return;
-			}
-		}
-	}
-	var select = document.getElementById("selectBox");
-	for(var j = select.length - 1; j>=0; j--) {
-		if (select.options[j].text.indexOf("Room") > -1) {
-			select.options.remove(j);
-			break;
-		}
-	}
-	var option = document.createElement("option");
-	option.text = 'Room '+occNum;
-	option.value = occNum;
-	select.add(option);
+    var sel = document.getElementById('occupiedRooms1');
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            if(sel.options[i].value !== 'null') {
+                occNum=sel.options[i].value;
+            } else {
+                return;
+            }
+        }
+    }
+    var select = document.getElementById("selectBox");
+    for(var j = select.length - 1; j>=0; j--) {
+        if (select.options[j].text.indexOf("Room") > -1) {
+            select.options.remove(j);
+            break;
+        }
+    }
+    var option = document.createElement("option");
+    option.text = 'Room '+occNum;
+    option.value = occNum;
+    select.add(option);
 }
 function addOccupiedToList2()
 {
-    	var sel = document.getElementById('occupiedRooms2');
-    	for (var i = sel.length - 1; i>=0; i--) {
-    		if (sel.options[i].selected) {
-    			if(sel.options[i].value !== 'null') {
-				occNum=sel.options[i].value;
-			} else {
-				return;
-			}
-		}
-	}
-	var select = document.getElementById("selectBox");
-	for(var j = select.length - 1; j>=0; j--) {
-		if (select.options[j].text.indexOf("Room") > -1) {
-			select.options.remove(j);
-			break;
-		}
-	}
-	var option = document.createElement("option");
-	option.text = 'Room '+occNum;
-	option.value = occNum;
-	select.add(option);
+    var sel = document.getElementById('occupiedRooms2');
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            if(sel.options[i].value !== 'null') {
+                occNum=sel.options[i].value;
+            } else {
+                return;
+            }
+        }
+    }
+    var select = document.getElementById("selectBox");
+    for(var j = select.length - 1; j>=0; j--) {
+        if (select.options[j].text.indexOf("Room") > -1) {
+            select.options.remove(j);
+            break;
+        }
+    }
+    var option = document.createElement("option");
+    option.text = 'Room '+occNum;
+    option.value = occNum;
+    select.add(option);
 }
 function addOccupiedToList3()
 {
-    	var sel = document.getElementById('occupiedRooms3');
-    	for (var i = sel.length - 1; i>=0; i--) {
-    		if (sel.options[i].selected) {
-    			if(sel.options[i].value !== 'null') {
-				occNum=sel.options[i].value;
-			} else {
-				return;
-			}
-		}
-	}
-	var select = document.getElementById("selectBox");
-	for(var j = select.length - 1; j>=0; j--) {
-		if (select.options[j].text.indexOf("Room") > -1) {
-			select.options.remove(j);
-			break;
-		}
-	}
-	var option = document.createElement("option");
-	option.text = 'Room '+occNum;
-	option.value = occNum;
-	select.add(option);
+    var sel = document.getElementById('occupiedRooms3');
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            if(sel.options[i].value !== 'null') {
+                occNum=sel.options[i].value;
+            } else {
+                return;
+            }
+        }
+    }
+    var select = document.getElementById("selectBox");
+    for(var j = select.length - 1; j>=0; j--) {
+        if (select.options[j].text.indexOf("Room") > -1) {
+            select.options.remove(j);
+            break;
+        }
+    }
+    var option = document.createElement("option");
+    option.text = 'Room '+occNum;
+    option.value = occNum;
+    select.add(option);
 }
 
 
@@ -335,98 +335,98 @@ function addOccupiedToList3()
 
 function guestList()
 {
-	socket.emit('getGuests');
-	socket.on('guests', function(data) {
-			var select = document.getElementById("guestBox");
-			select.options.length = 0;
-			var option = document.createElement("option");
-			option.text = "Guest:";
-			option.value = "";
-			select.add(option);
-			for (var i = data.length - 1; i>=0; i--) {
-				option.text = data[i];
-				option.value = data[i];
-				select.add(option);
-			}
-	});
+    socket.emit('getGuests');
+    socket.on('guests', function(data) {
+        var select = document.getElementById("guestBox");
+        select.options.length = 0;
+        var option = document.createElement("option");
+        option.text = "Guest:";
+        option.value = "";
+        select.add(option);
+        for (var i = data.length - 1; i>=0; i--) {
+            option.text = data[i];
+            option.value = data[i];
+            select.add(option);
+        }
+    });
 }
 
 window.onload=guestList();
 
 function addGuest()
 {
-	var guestName = document.getElementById("guestName").value;
-	socket.emit('name',guestName);
-	socket.on('guestAdded', function () {
-			guestList();
-	});
-	document.getElementById("guestName").value = "";
+    var guestName = document.getElementById("guestName").value;
+    socket.emit('name',guestName);
+    socket.on('guestAdded', function () {
+        guestList();
+    });
+    document.getElementById("guestName").value = "";
 }
 function updateTotal()
 {
-	socket.emit('getPrices');
-	socket.on('updateTotal', function (result) {
-			document.getElementById('total').innerHTML = result;	
-	});
+    socket.emit('getPrices');
+    socket.on('updateTotal', function (result) {
+        document.getElementById('total').innerHTML = result;
+    });
 }
 
 var date;
 var diffDays = 1;
 function setCheckout() {
-	date = document.getElementById('checkout').value;
-	var month;
-	var day;
-	if(date.charAt(8)==0){
-		day = date.charAt(9);
-	} else {
-		day = date.charAt(8)+date.charAt(9);
-	}
-	
-	if(date.charAt(5)==0){
-		month = date.charAt(6);
-	} else {
-		month = date.charAt(5)+date.charAt(6);
-	}
-	var year = date.charAt(0)+date.charAt(1)+date.charAt(2)+date.charAt(3);
-	
-	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth()+1; //January is 0!
-	var yyyy = today.getFullYear();
-	
-	if(year<yyyy){
-		alert("Enter a date after today");
-		return;
-	} else if (month<mm){
-		alert("Enter a date after today");
-		return;
-	} else if (month==mm && day<=dd){
-		alert("Enter a date after today");
-		return;
-	}
-	
-	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    date = document.getElementById('checkout').value;
+    var month;
+    var day;
+    if(date.charAt(8)==0){
+        day = date.charAt(9);
+    } else {
+        day = date.charAt(8)+date.charAt(9);
+    }
+
+    if(date.charAt(5)==0){
+        month = date.charAt(6);
+    } else {
+        month = date.charAt(5)+date.charAt(6);
+    }
+    var year = date.charAt(0)+date.charAt(1)+date.charAt(2)+date.charAt(3);
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if(year<yyyy){
+        alert("Enter a date after today");
+        return;
+    } else if (month<mm){
+        alert("Enter a date after today");
+        return;
+    } else if (month==mm && day<=dd){
+        alert("Enter a date after today");
+        return;
+    }
+
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
     var firstDate = new Date(yyyy,mm,dd);
     var secondDate = new Date(year,month,day);
 
     diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
-    
+
     calcTotal();
-	var select = document.getElementById('selectBox');
-	for(var j = select.length - 1; j>=0; j--) {
-		if (select.options[j].text.indexOf("Checkout") > -1) {
-			select.options.remove(j);
-			break;
-		}
-	}
-	var option = document.createElement("option");
-	var option2 = document.createElement("option");
-	option.text = 'Checkout: '+date;
-	option.value = date;
-	select.add(option);
-	option2.text = 'Nights: '+(diffDays-1);
-	option2.value = date;
-	select.add(option2);
+    var select = document.getElementById('selectBox');
+    for(var j = select.length - 1; j>=0; j--) {
+        if (select.options[j].text.indexOf("Checkout") > -1) {
+            select.options.remove(j);
+            break;
+        }
+    }
+    var option = document.createElement("option");
+    var option2 = document.createElement("option");
+    option.text = 'Checkout: '+date;
+    option.value = date;
+    select.add(option);
+    option2.text = 'Nights: '+(diffDays-1);
+    option2.value = date;
+    select.add(option2);
 }
 
 function calcTotal()
@@ -438,249 +438,249 @@ function calcTotal()
 
 function checkIn()
 {
-	
-	if (typeof num == 'undefined' || typeof name == 'undefined' || typeof employee == 'undefined' || typeof date == 'undefined') {
-		window.alert("Select a room, checkout date, employee, and guest before updating bill");	
-		return;
-	}
-	var total = document.getElementById('total').innerHTML;
-	socket.emit('checkIn', num, total, name, date, employee);
-	socket.on('checkedIn', function(data) {
-		window.alert(name+' has been checked-in to room '+num);	
-		voidItems();
-	});
-	
+
+    if (typeof num == 'undefined' || typeof name == 'undefined' || typeof employee == 'undefined' || typeof date == 'undefined') {
+        window.alert("Select a room, checkout date, employee, and guest before updating bill");
+        return;
+    }
+    var total = document.getElementById('total').innerHTML;
+    socket.emit('checkIn', num, total, name, date, employee);
+    socket.on('checkedIn', function(data) {
+        window.alert(name+' has been checked-in to room '+num);
+        voidItems();
+    });
+
 }
 
 function addKeycard()
 {
-	if (typeof occNum == 'undefined') {
-		window.alert("Select a room please");
-		return;
-	}
-	socket.emit('addKeycard', occNum);
-	socket.on('keycardAdded', function() {		
-		var select = document.getElementById('selectBox');
-		var option = document.createElement("option");
-		option.text = 'Keycard added to room '+occNum;
-		option.value = occNum;
-		select.add(option);
-		return;
-	});
+    if (typeof occNum == 'undefined') {
+        window.alert("Select a room please");
+        return;
+    }
+    socket.emit('addKeycard', occNum);
+    socket.on('keycardAdded', function() {
+        var select = document.getElementById('selectBox');
+        var option = document.createElement("option");
+        option.text = 'Keycard added to room '+occNum;
+        option.value = occNum;
+        select.add(option);
+        return;
+    });
 }
 
 function showKeycards()
 {
-	if (typeof occNum == 'undefined') {
-		window.alert("Select a room please");
-		return;
-	}
-	socket.emit('showKeycardList', occNum);
-	socket.on('getKeycardList', function(data) {
-	var select = document.getElementById("selectBox");
-		select.options.length = 0;
-		var option = document.createElement("option");
-		option.text = "Room " + occNum;
-		option.value = '';
-		select.add(option);
-                if(data.length == 0) {
-			window.alert("There are no keycards assigned to " + occNum);
-		}
-		for (var i = data.length - 1; i>=0; i--) {
-			option.text = "Assigned Keycard: " + data[i];
-			option.value = data[i];
-			select.add(option);
-		}
-	});
+    if (typeof occNum == 'undefined') {
+        window.alert("Select a room please");
+        return;
+    }
+    socket.emit('showKeycardList', occNum);
+    socket.on('getKeycardList', function(data) {
+        var select = document.getElementById("selectBox");
+        select.options.length = 0;
+        var option = document.createElement("option");
+        option.text = "Room " + occNum;
+        option.value = '';
+        select.add(option);
+        if(data.length == 0) {
+            window.alert("There are no keycards assigned to " + occNum);
+        }
+        for (var i = data.length - 1; i>=0; i--) {
+            option.text = "Assigned Keycard: " + data[i];
+            option.value = data[i];
+            select.add(option);
+        }
+    });
 }
 var payment;
 function addPayment()
 {
-	var sel = document.getElementById('payment');
-    	for (var i = sel.length - 1; i>=0; i--) {
-    		if (sel.options[i].selected) {
-    			if(sel.options[i].value !== 'null') {
-				payment=sel.options[i].innerHTML;
-			} else {
-				return;
-			}
-		}
-	}
-	var select = document.getElementById("selectBox");
-	for(var j = select.length - 1; j>=0; j--) {
-		if (select.options[j].text.indexOf("Payment") > -1) {
-			select.options.remove(j);
-			break;
-		}
-	}
-	var option = document.createElement("option");
-	option.text = 'Payment type: '+payment;
-	option.value = payment;
-	select.add(option);
+    var sel = document.getElementById('payment');
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            if(sel.options[i].value !== 'null') {
+                payment=sel.options[i].innerHTML;
+            } else {
+                return;
+            }
+        }
+    }
+    var select = document.getElementById("selectBox");
+    for(var j = select.length - 1; j>=0; j--) {
+        if (select.options[j].text.indexOf("Payment") > -1) {
+            select.options.remove(j);
+            break;
+        }
+    }
+    var option = document.createElement("option");
+    option.text = 'Payment type: '+payment;
+    option.value = payment;
+    select.add(option);
 }
 
 
 function checkout()
 {
-	var roomNum;
-	var sel = document.getElementById('occupiedRooms3');
-    	for (var i = sel.length - 1; i>=0; i--) {
-    		if (sel.options[i].selected) {
-    			if(sel.options[i].value !== 'null') {
-				roomNum=sel.options[i].innerHTML;
-			} else {
-				return;
-			}
-		}
-	}
-	socket.emit('checkout', roomNum, payment);
-	socket.on('checkedOut', function() {
-		socket.emit('cleanUp', roomNum);
-		socket.on('cleanedUp', function() {
-			window.alert("Room "+roomNum+" has been checked out successfully");		
-			voidItems();
-			return;
-		});
-	});
+    var roomNum;
+    var sel = document.getElementById('occupiedRooms3');
+    for (var i = sel.length - 1; i>=0; i--) {
+        if (sel.options[i].selected) {
+            if(sel.options[i].value !== 'null') {
+                roomNum=sel.options[i].innerHTML;
+            } else {
+                return;
+            }
+        }
+    }
+    socket.emit('checkout', roomNum, payment);
+    socket.on('checkedOut', function() {
+        socket.emit('cleanUp', roomNum);
+        socket.on('cleanedUp', function() {
+            window.alert("Room "+roomNum+" has been checked out successfully");
+            voidItems();
+            return;
+        });
+    });
 }
 
-function updateBill() 
+function updateBill()
 {
-	var total = document.getElementById('total').innerHTML;	
-	socket.emit('updateBill', occNum, total);
-	socket.on('billUpdated', function() {
-		window.alert('Bill updated for room '+occNum);
-	});
+    var total = document.getElementById('total').innerHTML;
+    socket.emit('updateBill', occNum, total);
+    socket.on('billUpdated', function() {
+        window.alert('Bill updated for room '+occNum);
+    });
 }
 
 function showBill()
 {
-	var select = document.getElementById("selectBox");	
-	socket.emit('getBill', occNum);
-	socket.on('bill', function(data) {
-			var option = document.createElement("option");
-			option.text = 'Bill for room '+occNum+': $'+data;
-			option.value = data;
-			select.add(option);
-	});
+    var select = document.getElementById("selectBox");
+    socket.emit('getBill', occNum);
+    socket.on('bill', function(data) {
+        var option = document.createElement("option");
+        option.text = 'Bill for room '+occNum+': $'+data;
+        option.value = data;
+        select.add(option);
+    });
 }
 
 </script>
 </HEAD>
 <BODY>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="#">Hotel DB: Where the magic truly happens</a> </div>
-  </div>
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+            <a class="navbar-brand" href="#">Hotel DB: Where the magic truly happens</a> </div>
+    </div>
 </div>
 <br>
 <div class="jumbotron">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12 col-sm-6 col-md-8">
-        <div class="panel panel-default">
-          <div class="panel-heading">Check-in</div>
-          <div class="panel-body"> Available Rooms:
-            <select class="form-control" id="availableRooms" onChange="addRoomToList()">
-            </select>
-            Employee:
-            <select class="form-control" id="employee" onChange="addEmployee()">
-              <option value="">Name:</option>
-              <option value="Alex">Alex</option>
-              <option value="Chase">Chase</option>
-              <option value="Matt">Matt</option>
-              <option value="Ian">Ian</option>
-            </select>
-            Guest:
-            <select class="form-control" onChange="addGuestToRegister()" id="guestBox">
-            </select>
-            Add New Guest:
-            <div class="input-group">
-              <input class="form-control" type="text" placeholder="Name" id="guestName">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check-in</div>
+                    <div class="panel-body"> Available Rooms:
+                        <select class="form-control" id="availableRooms" onChange="addRoomToList()">
+                        </select>
+                        Employee:
+                        <select class="form-control" id="employee" onChange="addEmployee()">
+                            <option value="">Name:</option>
+                            <option value="Alex">Alex</option>
+                            <option value="Chase">Chase</option>
+                            <option value="Matt">Matt</option>
+                            <option value="Ian">Ian</option>
+                        </select>
+                        Guest:
+                        <select class="form-control" onChange="addGuestToRegister()" id="guestBox">
+                        </select>
+                        Add New Guest:
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Name" id="guestName">
               <span class="input-group-btn">
               <button type="button" class="btn btn-primary" onClick="addGuest()">add</button>
               </span> </div>
-            Checkout:
-            <input class="form-control" type="date" id="checkout" onChange="setCheckout()">
-            <br>
-              <button type="button" class="btn btn-primary" onclick="checkIn()">Check-in</button>
-            <br>
-          </div>
-        </div>
-        
-        <div class="panel panel-default">
-          <div class="panel-heading">Keycards</div>
-          <div class="panel-body"> 
-          	Occupied rooms:
-            <select class="form-control" onChange="addOccupiedToList1()" id="occupiedRooms1">
-              <option value="">Room #:</option>
-            </select><br>
-            <button type="button" class="btn btn-primary" onClick="addKeycard()">Add keycard</button>
-            <button type="button" class="btn btn-primary" onClick="showKeycards()">Show keycards</button>
-	     
-          </div>
-        </div>
-        
-        <div class="panel panel-default">
-          <div class="panel-heading">Additional Expenses</div>
-          <div class="panel-body">
-          	Occupied Rooms:
-            <select class="form-control" onChange="addOccupiedToList2()" id="occupiedRooms2">
-              <option value="">Room #:</option>
-            </select>
-           Additional Charges:
-            <select class="form-control" onChange="addChargeToList()" id="additional">
-              <option value="">Charges:</option>
-            </select><br>
-            <button type="button" class="btn btn-primary" onclick="updateBill()">Update Bill</button>
-		<button type="button" class="btn btn-primary" onClick="showBill()">Show Bill</button>
-          </div>
-        </div>
-        
-        <div class="panel panel-default">
-          <div class="panel-heading">Checkout</div>
-          <div class="panel-body">
-          	Occupied Rooms:
-            <select class="form-control" onChange="addOccupiedToList3()" id="occupiedRooms3">
-              <option value="">Room #:</option>
-            </select>
-            Payment:
-            <select class="form-control" onChange="addPayment()" id="payment">
-              <option value="null">Payment:</option>
-              <option value="Cash">Cash</option>
-              <option value="Credit">Credit</option>
-              <option value="Check">Check</option>
-            </select><br>
-            <button type="button" class="btn btn-primary" onclick="checkout()">Checkout</button>
-            <br>
-          </div>
-        </div>
-          
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="panel panel-default" style="position:fixed; width:30%;">
-          <div class="panel-heading">Register</div>
-          <div class="panel-body">
-            <select class="form-control" multiple="multiple" id="selectBox" size="20">
-            </select>
-            <br>
-            total: <b>$</b><b id="total">0</b>
-            <div class="pull-right">
-             <!--- <button type="button" class="btn btn-primary" onclick="deleteItems()">Delete</button> --->
-              <button type="button" class="btn btn-primary" onclick="voidItems()">Void</button>
+                        Checkout:
+                        <input class="form-control" type="date" id="checkout" onChange="setCheckout()">
+                        <br>
+                        <button type="button" class="btn btn-primary" onclick="checkIn()">Check-in</button>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Keycards</div>
+                    <div class="panel-body">
+                        Occupied rooms:
+                        <select class="form-control" onChange="addOccupiedToList1()" id="occupiedRooms1">
+                            <option value="">Room #:</option>
+                        </select><br>
+                        <button type="button" class="btn btn-primary" onClick="addKeycard()">Add keycard</button>
+                        <button type="button" class="btn btn-primary" onClick="showKeycards()">Show keycards</button>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Additional Expenses</div>
+                    <div class="panel-body">
+                        Occupied Rooms:
+                        <select class="form-control" onChange="addOccupiedToList2()" id="occupiedRooms2">
+                            <option value="">Room #:</option>
+                        </select>
+                        Additional Charges:
+                        <select class="form-control" onChange="addChargeToList()" id="additional">
+                            <option value="">Charges:</option>
+                        </select><br>
+                        <button type="button" class="btn btn-primary" onclick="updateBill()">Update Bill</button>
+                        <button type="button" class="btn btn-primary" onClick="showBill()">Show Bill</button>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Checkout</div>
+                    <div class="panel-body">
+                        Occupied Rooms:
+                        <select class="form-control" onChange="addOccupiedToList3()" id="occupiedRooms3">
+                            <option value="">Room #:</option>
+                        </select>
+                        Payment:
+                        <select class="form-control" onChange="addPayment()" id="payment">
+                            <option value="null">Payment:</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit">Credit</option>
+                            <option value="Check">Check</option>
+                        </select><br>
+                        <button type="button" class="btn btn-primary" onclick="checkout()">Checkout</button>
+                        <br>
+                    </div>
+                </div>
+
             </div>
-          </div>
+            <div class="col-xs-6 col-md-4">
+                <div class="panel panel-default" style="position:fixed; width:30%;">
+                    <div class="panel-heading">Register</div>
+                    <div class="panel-body">
+                        <select class="form-control" multiple="multiple" id="selectBox" size="20">
+                        </select>
+                        <br>
+                        total: <b>$</b><b id="total">0</b>
+                        <div class="pull-right">
+                            <!--- <button type="button" class="btn btn-primary" onclick="deleteItems()">Delete</button> --->
+                            <button type="button" class="btn btn-primary" onclick="voidItems()">Void</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
-<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
