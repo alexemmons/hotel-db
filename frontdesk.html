@@ -606,12 +606,12 @@ function showBill()
                         <div class="input-group">
                             <input class="form-control" type="text" placeholder="Name" id="guestName">
               <span class="input-group-btn">
-              <button type="button" class="btn btn-primary" onClick="addGuest()">add</button>
+              <button type="button" class="btn btn-primary" onClick="addGuest()"><span class="glyphicon glyphicon-plus"></span> add</button>
               </span> </div>
                         Checkout:
                         <input class="form-control" type="date" id="checkout" onChange="setCheckout()">
                         <br>
-                        <button type="button" class="btn btn-primary" onclick="checkIn()">Check-in</button>
+                        <button type="button" class="btn btn-primary" onclick="checkIn()"><span class="glyphicon glyphicon-ok"></span> Check-in</button>
                         <br>
                     </div>
                 </div>
@@ -623,8 +623,8 @@ function showBill()
                         <select class="form-control" onChange="addOccupiedToList1()" id="occupiedRooms1">
                             <option value="">Room #:</option>
                         </select><br>
-                        <button type="button" class="btn btn-primary" onClick="addKeycard()">Add keycard</button>
-                        <button type="button" class="btn btn-primary" onClick="showKeycards()">Show keycards</button>
+                        <button type="button" class="btn btn-primary" onClick="addKeycard()"><span class="glyphicon glyphicon-plus"></span> Add keycard</button>
+                        <button type="button" class="btn btn-primary" onClick="showKeycards()"><span class="glyphicon glyphicon-search"></span> Show keycards</button>
 
                     </div>
                 </div>
@@ -640,8 +640,8 @@ function showBill()
                         <select class="form-control" onChange="addChargeToList()" id="additional">
                             <option value="">Charges:</option>
                         </select><br>
-                        <button type="button" class="btn btn-primary" onclick="updateBill()">Update Bill</button>
-                        <button type="button" class="btn btn-primary" onClick="showBill()">Show Bill</button>
+                        <button type="button" class="btn btn-primary" onclick="updateBill()"><span class="glyphicon glyphicon-refresh"></span> Update Bill</button>
+                        <button type="button" class="btn btn-primary" onClick="showBill()"><span class="glyphicon glyphicon-search"></span> Show Bill</button>
                     </div>
                 </div>
 
@@ -659,7 +659,7 @@ function showBill()
                             <option value="Credit">Credit</option>
                             <option value="Check">Check</option>
                         </select><br>
-                        <button type="button" class="btn btn-primary" onclick="checkout()">Checkout</button>
+                        <button type="button" class="btn btn-primary" onclick="checkout()"><span class="glyphicon glyphicon-ok"></span> Checkout</button>
                         <br>
                     </div>
                 </div>
@@ -675,7 +675,7 @@ function showBill()
                         total: <b>$</b><b id="total">0</b>
                         <div class="pull-right">
                             <!--- <button type="button" class="btn btn-primary" onclick="deleteItems()">Delete</button> --->
-                            <button type="button" class="btn btn-primary" onclick="voidItems()">Void</button>
+                            <button type="button" class="btn btn-primary" onclick="voidItems()"><span class="glyphicon glyphicon-remove"></span> Void</button>
                         </div>
                     </div>
                 </div>
