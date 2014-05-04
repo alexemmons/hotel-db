@@ -103,6 +103,7 @@ function additionalCharges()
         option.value = 'null';
         select.add(option);
         for (var i = data.length - 1; i>=0; i--) {
+            var option = document.createElement("option");
             option.text = data[i];
             option.value = data[i];
             select.add(option);
@@ -123,6 +124,7 @@ function availableRooms()
         option.value = 'null';
         select.add(option);
         for (var i = data.length - 1; i>=0; i--) {
+            var option = document.createElement("option");
             option.text = data[i];
             option.value = data[i];
             select.add(option);
@@ -144,6 +146,7 @@ function occupiedRooms1()
         option.value = 'null';
         select.add(option);
         for (var i = data.length - 1; i>=0; i--) {
+            var option = document.createElement("option");
             option.text = data[i];
             option.value = data[i];
             select.add(option);
@@ -162,6 +165,7 @@ function occupiedRooms2()
         option.value = 'null';
         select.add(option);
         for (var i = data.length - 1; i>=0; i--) {
+            var option = document.createElement("option");
             option.text = data[i];
             option.value = data[i];
             select.add(option);
@@ -180,6 +184,7 @@ function occupiedRooms3()
         option.value = 'null';
         select.add(option);
         for (var i = data.length - 1; i>=0; i--) {
+            var option = document.createElement("option");
             option.text = data[i];
             option.value = data[i];
             select.add(option);
@@ -344,6 +349,7 @@ function guestList()
         option.value = "";
         select.add(option);
         for (var i = data.length - 1; i>=0; i--) {
+            var option = document.createElement("option");
             option.text = data[i];
             option.value = data[i];
             select.add(option);
@@ -487,6 +493,7 @@ function showKeycards()
             window.alert("There are no keycards assigned to " + occNum);
         }
         for (var i = data.length - 1; i>=0; i--) {
+            var option = document.createElement("option");
             option.text = "Assigned Keycard: " + data[i];
             option.value = data[i];
             select.add(option);
