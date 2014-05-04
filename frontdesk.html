@@ -13,7 +13,7 @@ var socket = io.connect('http://localhost:8000');
 function deleteItems()
 {	
 	var sel = document.getElementById('selectBox');
-	var ids = new Array();
+	var ids = [];
 	for (var i = sel.length - 1; i>=0; i--) {
 		if (sel.options[i].selected) {
 			ids.push(sel.options[i].value);
@@ -103,7 +103,6 @@ function additionalCharges()
 				option.value = 'null';
 				select.add(option);
 			for (var i = data.length - 1; i>=0; i--) {
-				var option = document.createElement("option");   
 				option.text = data[i];
 				option.value = data[i];
 				select.add(option);
@@ -124,7 +123,6 @@ function availableRooms()
 				option.value = 'null';
 				select.add(option); 
 			for (var i = data.length - 1; i>=0; i--) {
-				var option = document.createElement("option"); 
 				option.text = data[i];
 				option.value = data[i];
 				select.add(option);
@@ -146,7 +144,6 @@ function occupiedRooms1()
 				option.value = 'null';
 				select.add(option); 
 			for (var i = data.length - 1; i>=0; i--) {
-				var option = document.createElement("option");
 				option.text = data[i];
 				option.value = data[i];
 				select.add(option);
@@ -165,7 +162,6 @@ function occupiedRooms2()
 				option.value = 'null';
 				select.add(option); 
 			for (var i = data.length - 1; i>=0; i--) {
-				var option = document.createElement("option");
 				option.text = data[i];
 				option.value = data[i];
 				select.add(option);
@@ -184,7 +180,6 @@ function occupiedRooms3()
 				option.value = 'null';
 				select.add(option); 
 			for (var i = data.length - 1; i>=0; i--) {
-				var option = document.createElement("option");
 				option.text = data[i];
 				option.value = data[i];
 				select.add(option);
@@ -349,7 +344,6 @@ function guestList()
 			option.value = "";
 			select.add(option);
 			for (var i = data.length - 1; i>=0; i--) {
-				var option = document.createElement("option");
 				option.text = data[i];
 				option.value = data[i];
 				select.add(option);
@@ -376,13 +370,6 @@ function updateTotal()
 	});
 }
 
-function addPayment(paymentType)
-{	
-	socket.emit('myPayment',paymentType);
-	socket.on('addPayment', function (){
-			voidItems();
-	});
-}
 var date;
 var diffDays = 1;
 function setCheckout() {
@@ -461,7 +448,6 @@ function checkIn()
 	socket.on('checkedIn', function(data) {
 		window.alert(name+' has been checked-in to room '+num);	
 		voidItems();
-		return;	
 	});
 	
 }
@@ -501,7 +487,6 @@ function showKeycards()
 			window.alert("There are no keycards assigned to " + occNum);
 		}
 		for (var i = data.length - 1; i>=0; i--) {
-			var option = document.createElement("option");
 			option.text = "Assigned Keycard: " + data[i];
 			option.value = data[i];
 			select.add(option);
