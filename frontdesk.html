@@ -84,14 +84,6 @@ function addGuestToRegister()
     select.add(option);
 }
 
-function voidAvailableRooms()
-{
-    var select = document.getElementById("availableRooms");
-    for (var i = select.length - 1; i>=0; i--) {
-        select.remove(i);
-    }
-}
-
 function additionalCharges()
 {
     socket.emit('getCharges');
@@ -445,7 +437,7 @@ function checkIn()
 {
 
     if (typeof num == 'undefined' || typeof name == 'undefined' || typeof employee == 'undefined' || typeof date == 'undefined') {
-        window.alert("Select a room, checkout date, employee, and guest before updating bill");
+        window.alert("Select a room, checkout date, employee, and guest before check-in.");
         return;
     }
     var total = document.getElementById('total').innerHTML;
