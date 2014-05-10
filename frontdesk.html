@@ -5,6 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hotel DB</title>
+<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <script src="//localhost:8000/socket.io/socket.io.js"></script>
@@ -360,13 +361,6 @@ function addGuest()
     });
     document.getElementById("guestName").value = "";
 }
-function updateTotal()
-{
-    socket.emit('getPrices');
-    socket.on('updateTotal', function (result) {
-        document.getElementById('total').innerHTML = result;
-    });
-}
 
 var date;
 var diffDays = 0;
@@ -435,18 +429,16 @@ function calcTotal()
 
 function checkIn()
 {
-
     if (typeof num == 'undefined' || typeof name == 'undefined' || typeof employee == 'undefined' || typeof date == 'undefined') {
         window.alert("Select a room, checkout date, employee, and guest before check-in.");
         return;
     }
     var total = document.getElementById('total').innerHTML;
     socket.emit('checkIn', num, total, name, date, employee);
-    socket.on('checkedIn', function(data) {
+    socket.on('checkedIn', function() {
         window.alert(name+' has been checked-in to room '+num);
         voidItems();
     });
-
 }
 
 function addKeycard()
